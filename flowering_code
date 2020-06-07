@@ -1,0 +1,83 @@
+import turtle
+from swampy.TurtleWorld import *
+import math
+
+
+# - - - - - - shapes - - - - - -
+
+def shapes(t, r, angle):
+    y = r * math.sin(angle * math.pi / 180)  # it will calculates the lager side of isosceles triangle half length.
+    t.rt(angle)
+    t.fd(r)
+    t.lt(90 + angle)
+    t.fd(2 * y)  # to obtain larger side  full-length, we multiplied it by 2.
+    t.lt(90 + angle)
+    t.fd(r)
+    t. lt(180 - angle)
+
+def full_shape(t, r, n):
+    angle = 360 / n  # this is included cause we need the pattern in 360* and it will calc the req. angle automatically.
+    for i in range(n):
+        # here we are declared angle is angle / 2.
+        # because it will take angle based upon the no. of sides that to be draw as we already declared.
+        # as angle is 360 / (no. side) . it will give correct angle for the shapes that to be drawn
+        shapes(t, r, angle/2)
+        t.lt(angle)
+# here n = no. of sides you need
+if __name__ == "__main__":
+    world = TurtleWorld()
+    t = Turtle()
+    pu(t)     # it means pull the pen out from paper.'do not write'
+    t.fd(100)
+    pd(t)     # opposite to t.pu()
+    t.delay = 0.1
+    full_shape(t, 40, 8)
+    pu(t)
+    t.bk(100)
+
+# - - - - - - - - - - - flowers - - - - - - - - - - - -
+# provides the polyline sides i.e; polygon, hexagon etc.
+
+def polyline(t, n, length, angle):
+    for i in range(n):
+        t.fd(length)
+        t.lt(angle)
+# polyline(turtle.Turtle(), 5, 100, 72)
+
+# print outs the circle
+def circle(t, r, angle):
+    cir_length = 2 * math.pi * r * (angle / 360)   # which is to provide the  circle curve length
+    # here we also included (angle / 360) , because i order to get precised curve based upon in how much angle circle.
+    # i.e; if we want the circle in only 180* 'half circle' , it will calc the precision ,to give actual shape of curve.
+    n = int(cir_length / 3) + 3   # here n is constant, with out putting it as constant, or adding this as parameter,
+    # we are defining it based upon the circumference curve length
+    actual_length = cir_length / n
+    # the length of each side of the circle is based on the the no. of sides that to be involved in the circle.
+    # because here the circle is producing by the help of polyline. so when we decrease the length it will be precised.
+    actual_angle = angle / n
+    t.lt(actual_angle / 2)
+    # here in above and 2nd-below this is given to provide the precised curve of length
+    # especially when it comes to half small angled circles and curve arcs.
+    polyline(t, n, actual_length, actual_angle)  # here the length and the angle is replaced by actual length and angle.
+    t.rt(actual_angle / 2)
+
+#circle(turtle.Turtle(), 50, 360)
+
+# provides the two sided single arc
+def arc(t, r, angle):
+    for i in range(2):    # to produce arc for 2 times
+        circle(t, r, angle)
+    # imagine you are giving 90* angle to produce 1/4 arc
+        t.lt(180-angle)  # the 't' faces the this angle after producing an arc.
+#arc(turtle.Turtle(), 50, 90)
+
+
+# produces the number of arcs as a flower.
+def flowers(t, n, r):
+    angle = 360 / n    # totally i need to produce the two sided arc in 360*
+    # here n is the number of two sided arcs
+    for i in range(n): # will iterate based on the no. of two sides arcs nedeed
+        arc(t, r, angle)
+        t.lt(angle)
+        #  to produce the other curves after one flower curve in 360* we just skip previous angle.
+flowers(turtle.Turtle(), 20, 120)

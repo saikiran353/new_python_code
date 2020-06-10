@@ -1,0 +1,68 @@
+import turtle
+import letter_draw_doc
+# here 'letter_draw_doc' is a another file that has the all alphabet letters, to use here.
+# this is the key file to write the code for to print the letter whatever we hit on the keyboard.
+import string
+# here we are giving the input from keyboard,so we are working with ascii lower case alphabets.
+# ascii lower case alphabets are belongs to string
+
+# making that the bob is in its initial position
+def zero_position(t, x, y):
+    t.pu()
+    t.goto(x, y)   # goto function provides the position to bob using co-ordinates x,y
+    t.pd()
+
+# we have to print the letter what we have entered in our key board
+def get_letter(char):
+    if bob.busy:  # initially bob will be in not-busy position. its is declared at above the function call below.
+        return
+    else:
+        bob.busy = True
+    try:
+        name = 'draw_' + char  # declaring the variable called 'name' which is responsible for to collect function name.
+        # here 'getattr' function collects the data from file 'letter_draw_doc/function_name'
+        func = getattr(letter_draw_doc, name)
+        # if we entered undefined character, exception take care of error and asks to enter valuable input.
+        # And make sure bob will be free
+    except AttributeError as e:
+        print("i don't know how to do that. please ensure that to be defined")
+        bob.busy = False
+        # we use the return to return the actual work of bob
+        return
+    func(bob, size)  # here func will take responsible for to print the character with given size.
+    # after printing small gap is maintained between the characters
+    letter_draw_doc.skip(bob, size/2)
+    bob.busy = False  # after printing each letter making that bob is free to get another.
+
+# if we want to print characters in new line
+def new_line():
+    # to go for new line we are giving the gap of '3*size' between lines cause,1size for gap, 2*size for character space
+    zero_position(bob, -300, bob.ycor() - size * 3)
+    bob.busy = False    # making the bob free
+
+# this function is used to take the input from from the user by pressing key
+# once we have given the data for to get character, we have to return it.
+# normally we can define "return" in 'get_letter()' function itself. but it will give you error by giving all at oneflow
+# so we use this function to return the printing data.
+def press_key(char):
+    def func():
+        get_letter(char)
+    return func
+
+bob = turtle.Turtle()
+size = 20
+zero_position(bob, -300, 200) # getting to initial position
+bob.busy = False
+
+# to use the press_key config we use below functions
+screen = bob.getscreen()
+for char in string.ascii_lowercase:
+    # onkey is belongs to screen
+    # screen is a variable to getscreen() function
+    screen.onkey(press_key(char), char)  # this takes 2 parameters, the function to call and what char given as input.
+# to get the  new line, taking input from user keyboard
+screen.onkey(new_line, 'Return') # takes 2 parameters, the function and key config.
+# in order to print the letter on the screen, we use the function called 'listen()'
+# if we don't call this function, bob will remember the shape but not the screen(to see the shape on the screen)
+screen.listen()
+turtle.mainloop()  # making bob to wain until user do something.

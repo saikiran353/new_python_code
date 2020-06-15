@@ -1,0 +1,30 @@
+import turtle
+from swampy.TurtleWorld import *
+from polygon import *
+
+# we can use arc for drawing the spiral shapes:
+'''
+def spiral(t, r):
+    for r in range(20):
+        if r % 5 == 0:
+            arc(t, r, 180)
+    turtle.mainloop() '''
+
+
+# drawing the spiral shapes for archimedes spiral model.
+def draw_spiral(t, n, length = 3, a = 0.1, b=0.0002):
+    theta = 1
+    for i in range(n):
+        t.fd(length)
+        dtheta = 1 / (a + b * theta)
+
+        t.lt(dtheta)
+        theta += dtheta
+
+bob = turtle.Turtle()
+draw_spiral(bob, n=300)
+turtle.mainloop()
+
+# these two are for the spiral model using arc.
+#bob.fd(200)
+#spiral(turtle.Turtle(), 20)

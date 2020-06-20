@@ -1,0 +1,52 @@
+from decimal import *
+def mysquare_root(a):
+    x = 1
+    while True:
+        #print(x)
+        y = (x + a/x) / 2
+        if x == y:
+            break
+        x = y
+    return (x)
+#mysquare_root(10)
+# float comparision values gives approximate values. so,it is not safe to compare two floats.
+# so,we go for absolute values to compare the difference between them with epsilon which is least value.
+import math
+def square_root(a):
+    x = math.sqrt(a)
+    return x
+def difference(a):
+    d = square_root(a) - mysquare_root(a)
+    return d
+
+# the below function prints the table, but the alignment is not good.
+def list_func():
+    for a in range(1, 10):
+        print(float(a), " " * 20, f"{mysquare_root(a)}", " "*20, f"{square_root(a)}"," "*20,f"{difference(a)}")
+#list_func()
+
+# by using the below function we are fixing the decimals after point to '15'
+# the 1st function is for square_root which is built in function
+# 2nd is for alignment of difference after built_in_ function values.
+def dec_1(a):
+    d = Decimal(mysquare_root(a))
+    #print(d)
+    d1 = round(d, 15)
+    #print(d1)
+    #print(d1)
+    return Decimal(d1)
+
+#print(dec_1(4))
+def dec_2(a):
+    d = Decimal(square_root(a))
+    #print(d)
+    d1 = round(d, 15)
+    #print(d1)
+    return Decimal(d1)
+#print(dec_2(2))
+
+def print_it():
+    for a in range(1, 10):
+        print(float(a), " " * 10, f"{dec_1(a)}", ' '*9, f"{dec_2(a)}", ' '*9, f"{difference(a)}")
+
+print_it()
